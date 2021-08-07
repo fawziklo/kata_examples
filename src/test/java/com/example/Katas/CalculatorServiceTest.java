@@ -78,5 +78,12 @@ class CalculatorServiceTest {
         Assertions.assertEquals(21.83333396911621, result);
     }
 
+    @Test
+    public void should_return_average_null_when_list_is_empty() {
+        // THEN
+        Double result = calculatorService.average(emptyList);
+        Assertions.assertNull(result);
+    }
+
 
 }
