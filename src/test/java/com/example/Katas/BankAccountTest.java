@@ -16,8 +16,6 @@ public class BankAccountTest {
         //GIVEN
         Account myAccount = new Account();
         myAccount.setBalance(5000);
-        myAccount.setDate(LocalDateTime.now());
-
         //WHEN
         myAccount.setAmount(1000);
 
@@ -32,8 +30,6 @@ public class BankAccountTest {
         //GIVEN
         Account myAccount = new Account();
         myAccount.setBalance(5000);
-        myAccount.setDate(LocalDateTime.now());
-
         //WHEN
         myAccount.setAmount(1000);
 
@@ -41,5 +37,24 @@ public class BankAccountTest {
         Account result = myAccount.makeWithdrawal(myAccount);
 
         assertEquals(result.getBalance(), 4000);
+    }
+
+    @Test
+    public void should_print_the_history_of_all_operations(){
+        //GIVEN
+        Account myAccount = new Account();
+        myAccount.setBalance(5000);
+        LocalDateTime timeOp = LocalDateTime.now();
+        myAccount.setDate(timeOp);
+
+        //WHEN
+        myAccount.setAmount(1000);
+
+        AccountOperations accountOperations = new AccountOperations();
+
+        //THEN
+
+
+
     }
 }

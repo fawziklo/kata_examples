@@ -6,9 +6,10 @@ import java.time.LocalDateTime;
 
 @Data
 public class Account {
-    private LocalDateTime date;
     private double amount;
     private double balance;
+    private LocalDateTime date;
+
 
     public Account makeDeposit(final Account myAccount) {
         double newAccountBalance = myAccount.balance + myAccount.amount;
