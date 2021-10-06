@@ -49,12 +49,14 @@ public class BankAccountTest {
 
         //WHEN
         myAccount.setAmount(1000);
+        myAccount.setOperation(Operations.DEPOSIT);
 
         AccountOperations accountOperations = new AccountOperations();
 
+        accountOperations.operationsList.add(myAccount);
+
         //THEN
-
-
+        accountOperations.displayHistoryOperations();
 
     }
 }

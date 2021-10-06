@@ -9,6 +9,7 @@ public class Account {
     private double amount;
     private double balance;
     private LocalDateTime date;
+    private Operations operation;
 
 
     public Account makeDeposit(final Account myAccount) {
