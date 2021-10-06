@@ -3,6 +3,7 @@ package com.example.Katas.bankaccount;
 import com.example.Katas.bankaccount.models.Account;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -13,6 +14,7 @@ public class DisplayService {
         AtomicReference<StringBuilder> display = new AtomicReference<>(new StringBuilder());
 
         accountOperations.forEach(op -> display.set(printDetails(op, display.get())));
+
         return display.toString();
     }
 
