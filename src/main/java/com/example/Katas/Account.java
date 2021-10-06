@@ -1,13 +1,18 @@
 package com.example.Katas;
 
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
+@Data
 public class Account {
-    LocalDateTime date;
-    Double amount;
-    Double balance;
+    private LocalDateTime date;
+    private double amount;
+    private double balance;
 
-    public Double makeDeposit(Double deposit) {
-        return null;
+    public Account makeDeposit(final Account myAccount) {
+        double newAccountBalance = myAccount.balance + myAccount.amount;
+        myAccount.setBalance(newAccountBalance);
+        return myAccount;
     }
 }
