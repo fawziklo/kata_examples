@@ -28,7 +28,7 @@ public class BankAccountTest {
     }
 
     @Test
-    public void should_make_withdrawal_from_my_account(){
+    public void should_make_withdrawal_from_my_account() {
         //GIVEN
         Account myAccount = new Account();
         myAccount.setBalance(5000);
@@ -40,8 +40,6 @@ public class BankAccountTest {
         //THEN
         Account result = myAccount.makeWithdrawal(myAccount);
 
-        assertEquals(result.getBalance(),4000);
-
-
+        assertEquals(result.getBalance(), 4000);
     }
 }
