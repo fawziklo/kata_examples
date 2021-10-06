@@ -26,4 +26,22 @@ public class BankAccountTest {
 
         assertEquals(result.getBalance(), 6000);
     }
+
+    @Test
+    public void should_make_withdrawal_from_my_account(){
+        //GIVEN
+        Account myAccount = new Account();
+        myAccount.setBalance(5000);
+        myAccount.setDate(LocalDateTime.now());
+
+        //WHEN
+        myAccount.setAmount(1000);
+
+        //THEN
+        Account result = myAccount.makeWithdrawal(myAccount);
+
+        assertEquals(result.getBalance(),4000);
+
+
+    }
 }

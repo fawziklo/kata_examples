@@ -15,4 +15,9 @@ public class Account {
         myAccount.setBalance(newAccountBalance);
         return myAccount;
     }
+
+    public Account makeWithdrawal(Account account) {
+
+        return account;
+    }
 }
