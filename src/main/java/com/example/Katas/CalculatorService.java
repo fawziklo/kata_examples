@@ -11,7 +11,6 @@ public class CalculatorService {
         return numbersList.size() > 0 ? numbersList.stream().min(Integer::compare).get() : null;
     }
 
-
     public Integer max(List<Integer> numbersList) {
         return numbersList.size() > 0 ? numbersList.stream().max(Integer::compare).get() : null;
     }
