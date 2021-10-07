@@ -12,7 +12,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,14 +23,14 @@ public class BankAccountTest {
     @Test
     public void should_make_deposit_in_my_account() {
         //GIVEN
-        Account myAccount = new Account();
-        myAccount.setBalance(5000);
+        Account account = new Account();
+        account.setBalance(5000);
         //WHEN
-        myAccount.setAmount(1000);
+        account.setAmount(1000);
         DepositOperation depositOperation = new DepositOperation();
 
         //THEN
-        Account result = depositOperation.makeOperation(myAccount);
+        Account result = depositOperation.makeOperation(account);
 
         assertEquals(result.getBalance(), 6000);
     }
@@ -39,14 +38,14 @@ public class BankAccountTest {
     @Test
     public void should_make_withdrawal_from_my_account() {
         //GIVEN
-        Account myAccount = new Account();
-        myAccount.setBalance(5000);
+        Account account = new Account();
+        account.setBalance(5000);
         //WHEN
-        myAccount.setAmount(1000);
+        account.setAmount(1000);
 
         //THEN
         WithdrawalOperation withdrawalOperation = new WithdrawalOperation();
-        Account result = withdrawalOperation.makeOperation(myAccount);
+        Account result = withdrawalOperation.makeOperation(account);
 
         assertEquals(result.getBalance(), 4000);
     }
@@ -54,97 +53,86 @@ public class BankAccountTest {
     @Test
     public void should_print_the_history_of_one_deposit_operation() {
         //GIVEN
-        Account myAccount = new Account();
-
-        myAccount.setBalance(5000);
-        LocalDateTime timeOp = LocalDateTime.now();
-        myAccount.setDate(timeOp);
-
-        //WHEN
-        myAccount.setAmount(1000);
-        myAccount.setOperation(Operations.DEPOSIT);
-
+        Account account = new Account();
         WithdrawalOperation withdrawalOperation = new WithdrawalOperation();
         DepositOperation depositOperation = new DepositOperation();
-
         StrategyExecution strategyExecution = new StrategyExecution(depositOperation, withdrawalOperation);
-        strategyExecution.execute(myAccount);
-
-        List<Account> accountOperations = new ArrayList<>();
-        accountOperations.add(myAccount);
-
         DisplayService displayService = new DisplayService();
 
-        //THEN
-        //List<String> result = displayService.displayHistoryOperations(accountOperations);
+        account.setBalance(5000);
+        LocalDateTime opTime = LocalDateTime.now();
+        account.setDate(opTime);
 
-        //assertEquals(result.get(0), "you've made a DEPOSIT with an amount of 1000.0 at 22:13:00, your actual balance is : 6000.0");
+        //WHEN
+        account.setAmount(1000);
+        account.setOperation(Operations.DEPOSIT);
+
+        Account updateAccount = strategyExecution.execute(account);
+
+        //THEN
+        String result = displayService.displayHistoryOperations(updateAccount);
+        assertEquals(opTime, account.getDate());
+        assertEquals(result, "you've made a DEPOSIT with an amount of 1000.0 at 22:13:00, your actual balance is : 6000.0");
     }
 
     @Test
     public void should_print_the_history_of_one_withdrawal_operation() {
         //GIVEN
-        Account myAccount = new Account();
-
-        myAccount.setBalance(5000);
-        LocalDateTime timeOp = LocalDateTime.now();
-        myAccount.setDate(timeOp);
-
-        //WHEN
-        myAccount.setAmount(1000);
-        myAccount.setOperation(Operations.WITHDRAWAL);
-
+        Account account = new Account();
         WithdrawalOperation withdrawalOperation = new WithdrawalOperation();
         DepositOperation depositOperation = new DepositOperation();
         StrategyExecution strategyExecution = new StrategyExecution(depositOperation, withdrawalOperation);
-
-        strategyExecution.execute(myAccount);
-
-        List<Account> accountOperations = new ArrayList<>();
-        accountOperations.add(myAccount);
-
         DisplayService displayService = new DisplayService();
 
+        account.setBalance(5000);
+        LocalDateTime opTime = LocalDateTime.now();
+        account.setDate(opTime);
+
+        //WHEN
+        account.setAmount(1000);
+        account.setOperation(Operations.WITHDRAWAL);
+        Account updateAccount = strategyExecution.execute(account);
+
         //THEN
-        //List<String> result = displayService.displayHistoryOperations(accountOperations);
-        //assertEquals(result.get(0), "you've made a WITHDRAWAL with an amount of 1000.0 at 22:13:00, your actual balance is : 4000.0");
+        String result = displayService.displayHistoryOperations(updateAccount);
+
+        assertEquals(opTime, account.getDate());
+        assertEquals(result, "you've made a WITHDRAWAL with an amount of 1000.0 at 22:13:00, your actual balance is : 4000.0");
     }
 
     @Test
     public void should_print_the_history_of_all_operation() {
         //GIVEN
-        Account myAccount = new Account();
+        Account account = new Account();
         WithdrawalOperation withdrawalOperation = new WithdrawalOperation();
         DepositOperation depositOperation = new DepositOperation();
         StrategyExecution strategyExecution = new StrategyExecution(depositOperation, withdrawalOperation);
-        List<String> accountOperations = new ArrayList<>();
+        List<String> accountOperationsHistory = new ArrayList<>();
         DisplayService displayService = new DisplayService();
 
-        myAccount.setBalance(5000);
+        //WHEN
+        account.setBalance(5000);
         Operations[] ops = {Operations.DEPOSIT, Operations.WITHDRAWAL};
         double[] amounts = {1000, 2000};
-        String result = "";
+        LocalDateTime opTime = null;
+
         for (int i = 0; i < ops.length; i++) {
-            LocalDateTime timeOp = LocalDateTime.now();
-            myAccount.setDate(timeOp);
+            opTime = LocalDateTime.now();
+            account.setDate(opTime);
 
-            //WHEN
-            myAccount.setAmount(amounts[i]);
-            myAccount.setOperation(ops[i]);
+            account.setAmount(amounts[i]);
+            account.setOperation(ops[i]);
 
-            Account updateMyAccount = strategyExecution.execute(myAccount);
-            result = displayService.displayHistoryOperations(Arrays.asList(updateMyAccount));
-            accountOperations.add(result);
+            Account updateAccount = strategyExecution.execute(account);
+            String opHistory = displayService.displayHistoryOperations(updateAccount);
+
+            accountOperationsHistory.add(opHistory);
         }
 
-
-
         //THEN
-        //List<String result = displayService.displayHistoryOperations(result);
-        assertNotNull(result);
-        assertEquals(accountOperations.get(0),"you've made a DEPOSIT with an amount of 1000.0 at 22:13:00, your actual balance is : 6000.0");
-        assertEquals(accountOperations.get(1),"you've made a WITHDRAWAL with an amount of 2000.0 at 22:13:00, your actual balance is : 4000.0");
-
-
+        assertNotNull(accountOperationsHistory);
+        assertEquals(opTime, account.getDate());
+        assertEquals(accountOperationsHistory.get(0), "you've made a DEPOSIT with an amount of 1000.0 at 22:13:00, your actual balance is : 6000.0");
+        assertEquals(accountOperationsHistory.get(1), "you've made a WITHDRAWAL with an amount of 2000.0 at 22:13:00, your actual balance is : 4000.0");
     }
 }
